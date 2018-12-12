@@ -6,13 +6,15 @@
       </div>
     </el-row>
     <el-row>
-      <el-col :span="3">
-        <el-button round>设备号</el-button>
+      <el-col :span="5">
+        <el-button round class="show-section-btn">设备号</el-button>
+        <span class="glyphicon glyphicon-search show-section-search" aria-hidden="true"></span>
       </el-col>
       <el-col :span="3">
-        <el-button round>设备号</el-button>
+        
       </el-col>
     </el-row>
+
   </section>
 </template>
 <style>
@@ -35,6 +37,13 @@
   font-size: 24px;
   font-weight: bold;
 
+}
+.show-section-search{
+  font-size: 24px;
+  color: #20a0ff;
+}
+.show-section-btn{
+  width: 150px;
 }
 
 </style>

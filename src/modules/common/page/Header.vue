@@ -4,7 +4,7 @@
         <img alt="Brand" class="navbar-img" src="../../../assets/logo.png">
       </a>
     <span class="glyphicon glyphicon-bell header-bell" aria-hidden="true"></span>
-    <span style="font-size:20px" class="glyphicon glyphicon-user header-bell" aria-hidden="true"></span>
+    <span class="glyphicon glyphicon-user header-bell" aria-hidden="true"></span>
     <!-- <span>王小虎</span> -->
   </div>
 </template>
