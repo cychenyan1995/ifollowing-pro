@@ -3,7 +3,7 @@
     <el-header style="text-align: right; font-size: 12px;background-color: #20a0ff">
       <v-header />
     </el-header>
-    <el-container style="height: 500px;">
+    <el-container style="height: auto;">
       <el-aside width="200px" style="background-color: #e6e6e6"><v-aside /></el-aside>
       <el-main>
         <router-view></router-view>
