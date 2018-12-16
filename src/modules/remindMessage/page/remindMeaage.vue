@@ -6,7 +6,7 @@
       </div>
     </el-row>
     <el-row>
-      <el-col :span="2" :offset="1">
+      <el-col :span="3" :offset="1">
         <!--  <el-button round class=" show-section-btn">设备号</el-button> -->
         <!-- <el-input class="show-section-input" v-model="input" placeholder="设备号"></el-input> -->
         <div class="show-section-input el-input" clearable>
@@ -43,7 +43,7 @@
         </el-table-column>
         <el-table-column prop="deviceNo" label="设备号" width="120">
         </el-table-column>
-        <el-table-column label="时间" width="120">
+        <el-table-column prop="date" label="时间" width="120">
           <template slot-scope="scope">{{ scope.row.date }}</template>
         </el-table-column>
         <el-table-column prop="remindType" label="提醒类型" width="120">
@@ -61,17 +61,31 @@
           <template slot-scope="scope"><span :class="[scope.row.status === 0 ? 'read-status' : '']">{{ scope.row.status === 1 ? '已读' : '未读' }}</span></template>
         </el-table-column>
       </el-table>
+      <div class="block" style="float:right;">
+        <el-pagination @size-change="handleSizeChange"
+         @current-change="handleCurrentChange" 
+         :current-page="currentPage" 
+         :page-sizes="pageSizes" 
+         :page-size="pageSize" 
+         layout="total, sizes, prev, pager, next, jumper" 
+         :total="400">
+        </el-pagination>
+      </div>
     </div>
   </section>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
-  data() {
+  data () {
     return {
       input: '',
-      checkList:['手机号'],
-      ckeckboxList: ['手机号','设备号','时间类型','提醒类型','操作','状态'],
-      tableData: [],
+      checkList: ['手机号'],
+      ckeckboxList: ['手机号', '设备号', '时间类型', '提醒类型', '操作', '状态'],
+      // tableData: [],
+      pageSizes: [100, 200, 300, 400],
+      pageSize: 100,
+      currentPage: 1,
       // tableData: [{
       //   date: '2016-05-03',
       //   name: '王小虎',
@@ -112,13 +126,41 @@ export default {
     }
   },
   methods: {
-    handleSelectionChange() {
+    handleSelectionChange () {
 
     },
     clearSearch () {
-      this.input = '';
+      this.input = ''
+    },
+    getTableList (currPage) {
+      this.currPage = currPage === 'undefined' ? 1 : currPage
+      let params = {
+        /*currPage: this.currPage,
+        pageSize: this.pageSize*/
+      }
+      console.log(params)
+      console.log(this.$store)
+      /*this.$axios.get('/remindMessage/getTableList').then(res => {
+        console.log(res)
+      })*/
+       this.$store.dispatch('fetchTableList', { param: params, ref: this })
+    },
+    handleSizeChange (pageSize) {
+      this.pageSize = pageSize
+    },
+    handleCurrentChange (currPage) {
+      this.currPage = currPage
     }
-  }
+  },
+  mounted () {
+    this.getTableList()
+  },
+  computed: mapState({
+    tableData: state => {
+      console.log(state)
+      return state.remindMessage.tableData
+    }
+  })
 }
 
 </script>
@@ -178,7 +220,8 @@ export default {
   color: red;
 
 }
-.show-section-checkbox{
+
+.show-section-checkbox {
   margin-left: 30px;
 }
 
