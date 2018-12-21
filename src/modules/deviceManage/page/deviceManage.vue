@@ -1,58 +1,122 @@
 <template>
-    <div>
-      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55">
-        </el-table-column>
-        <el-table-column label="日期" width="120">
-          <template slot-scope="scope">{{ scope.row.date }}</template>
-        </el-table-column>
-        <el-table-column prop="name" label="姓名" width="120">
-        </el-table-column>
-        <el-table-column prop="address" label="地址" show-overflow-tooltip>
-        </el-table-column>
-      </el-table>
-    </div>
+  <section class="section">
+    <!--  <el-progress type="circle" :percentage="25" color="#8e71c7"></el-progress> -->
+    <!-- #5ca3ff -->
+    <el-row>
+      <el-col :span="12">
+        <div id="onlineChart" style="height: 300px"></div>
+      </el-col>
+    </el-row>
+  </section>
 </template>
 <script>
-  export default{
-    data () {
-      return {
-        tableData: [{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-08',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-06',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-07',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }],
-        multipleSelection: []
-      }
-    },
-    methods: {
-      handleSelectionChange () {
-
-      }
+import echarts from 'echarts'
+import { mapState } from 'vuex'
+export default {
+  data() {
+    return {
+      // notOnlineNum: 0
     }
+  },
+  methods: {
+    initOnlineInfoChart() {
+      const myChart = echarts.init(document.getElementById('onlineChart'))
+      myChart.showLoading()
+      myChart.setOption(this.option)
+      myChart.hideLoading()
+    },
+    getOnlineChartData() {
+      let params = {}
+      this.$store.dispatch('deviceManage/fetchOnlineNum', params)
+    }
+  },
+  computed: {
+    //从state中取出数据
+    ...mapState({
+      totalNum: state => state.deviceManage.totalNum,
+      onlineNum: state => state.deviceManage.onlineNum,
+    }),
+    origin () {
+      return this.$state.deviceManage
+    },
+    notOnlineNum () {
+      return this.totalNum - this.onlineNum
+    },
+    option() {
+      let obj = {
+        title: {
+          text: this.origin[totalNum],
+          x: 'center',
+          y: 'center',
+          textStyle: {
+            fontWeight: 'normal',
+            color: '#0580f2',
+            fontSize: '30'
+          }
+        },
+        color: ['rgba(176, 212, 251, 1)'],
+        legend: {
+          show: true,
+          itemGap: 12,
+          data: ['01', '02']
+        },
+
+        series: [{
+          name: 'Line 1',
+          type: 'pie',
+          clockWise: true,
+          radius: ['50%', '56%'],
+          itemStyle: {
+            normal: {
+              label: {
+                show: false
+              },
+              labelLine: {
+                show: false
+              }
+            }
+          },
+          hoverAnimation: false,
+          data: [{
+            value: this.origin[totalNum],
+            name: '01',
+            itemStyle: {
+              normal: {
+                color: { // 完成的圆环的颜色
+                  colorStops: [{
+                    offset: 0,
+                    color: '#00cefc' // 0% 处的颜色
+                  }, {
+                    offset: 1,
+                    color: '#367bec' // 100% 处的颜色
+                  }]
+                },
+                label: {
+                  show: false
+                },
+                labelLine: {
+                  show: false
+                }
+              }
+            }
+          }, {
+            name: '02',
+            value: this.origin[onlineNum]
+          }]
+        }]
+      }
+      return obj
+    }
+  },
+  mounted() {
+    this.getOnlineChartData()
+    this.initOnlineInfoChart()
+  },
+  updated () {
+    //this.$nextTick(function () {
+      this.initOnlineInfoChart()
+    //})
   }
+}
+
 </script>
