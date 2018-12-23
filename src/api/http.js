@@ -1,27 +1,27 @@
-import axios from 'axios';
+import axios from 'axios'
 
 // 创建axios默认请求
 // axios.defaults.baseURL = 'http://xxxxxx.com';
 // 配置超时时间
-axios.defaults.timeout = 100000;
+axios.defaults.timeout = 100000
 // 配置请求拦截
 axios.interceptors.request.use(config => {
   // config.setHeaders([
   //   // 在这里设置请求头与携带token信息
   // ]);
-  return config;
-});
+  return config
+})
 // 添加响应拦截器
 axios.interceptors.response.use(
   function (response) {
-    console.log(response);
-    return response;
+    console.log(response)
+    return response
   },
   function (error) {
     // 对响应错误做点什么
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 /**
  * get请求
  * @method get
@@ -34,13 +34,13 @@ let get = function (url, params) {
         params: params
       })
       .then(res => {
-        resolve(res);
+        resolve(res)
       })
       .catch(err => {
-        reject(err);
-      });
-  });
-};
+        reject(err)
+      })
+  })
+}
 /**
  * post请求
  * @method post
@@ -51,11 +51,11 @@ let post = function (url, data) {
     axios
       .post(url, JSON.stringify(data))
       .then(res => {
-        resolve(res);
+        resolve(res)
       })
       .catch(err => {
-        reject(err);
-      });
-  });
-};
-export default {get, post};
+        reject(err)
+      })
+  })
+}
+export default {get, post}

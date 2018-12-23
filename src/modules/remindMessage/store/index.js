@@ -4,11 +4,12 @@ import mutations from './mutation/index'
 
 var state = {
   tableData: [],
-  pageTotal: 0
+  pageTotal: 0,
+  resStatus: 0
 }
 
 export default {
-  namespace: 'remindMessage',
+  namespaced: true,
   getters,
   actions,
   mutations,

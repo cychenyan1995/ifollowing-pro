@@ -16,18 +16,17 @@ export default new Router({
     //     {path: '/deviceManage', component: deviceManage, name: '设备管理', class: 'el-icon-menu'}
     //   ]
     // },
-    
     {
       path: '/remindMessage',
       component: remindMessage,
-      name: '提醒消息',
+      name: 'remind',
       class: 'el-icon-menu'
     },
     {
       path: '/deviceManage',
       component: deviceManage,
-      name: '设备管理',
+      name: 'device',
       class: 'el-icon-message'
-    },
+    }
   ]
 })
